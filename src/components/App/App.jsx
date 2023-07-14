@@ -7,13 +7,7 @@ import css from './app.module.css';
 
 export const App = () => {
   const [filter, setFilter] = useState('');
-  const [contacts, setContacts] = useState(
-    () => JSON.parse(localStorage.getItem(LS_KEY_CONTACTS)) ?? []
-  );
-
-  useEffect(() => {
-    localStorage.setItem(LS_KEY_CONTACTS, JSON.stringify(contacts));
-  }, [contacts]);
+  const [contacts, setContacts] = useLocalStorage('contacts', []);
 
   const onContactFormSubmit = newContact => {
     if (
