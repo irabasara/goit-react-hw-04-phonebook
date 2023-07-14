@@ -2,11 +2,8 @@ import { ContactForm } from '../ContactForm/ContactForm';
 import { Filter } from 'components/Filter/Filter';
 import { ContactList } from 'components/ContactList/ContactList';
 import { useState } from 'react';
-// import useLocalStorage from '../hooks/LocaleStorage';
-import { useEffect } from 'react';
+import useLocalStorage from '../hooks/LocaleStorage';
 import css from './app.module.css';
-
-const LS_KEY_CONTACTS = 'contacts';
 
 export const App = () => {
   const [filter, setFilter] = useState('');

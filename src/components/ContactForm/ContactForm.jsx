@@ -1,9 +1,9 @@
-import React, { Component } from 'react';
+// import React, { Component } from 'react';
 import css from './ContactForm.module.css';
 import { nanoid } from 'nanoid';
-import { Formik, Form, Field, ErrorMessage } from 'formik';
+import { Formik, Form, Field, ErrorMessage, useFormik } from 'formik';
 import * as yup from 'yup';
-import PropTypes from 'prop-types';
+// import PropTypes from 'prop-types';
 
 const Schema = yup.object().shape({
   name: yup
@@ -24,66 +24,123 @@ const Schema = yup.object().shape({
     ),
 });
 
-const initialValues = {
-  name: '',
-  number: '',
-};
+export const ContactForm = ({ onSubmit }) => {
+  const formik = useFormik({
+    initialValues: {
+      name: '',
+      number: '',
+    },
+  });
 
-export class ContactForm extends Component {
-  handleSubmit = (values, { resetForm }) => {
+  const handleSubmit = (values, { resetForm }) => {
     const newContact = {
       id: nanoid(),
       name: values.name,
       number: values.number,
     };
 
-    this.props.onSubmit(newContact);
+    onSubmit(newContact);
     resetForm();
   };
 
-  nameId = nanoid();
-  numberId = nanoid();
+  const nameId = nanoid();
+  const numberId = nanoid();
 
-  render() {
-    ContactForm.propType = {
-      onSubmit: PropTypes.func,
-    };
+  return (
+    <Formik
+      initialValues={formik.initialValues}
+      onSubmit={handleSubmit}
+      validationSchema={Schema}
+    >
+      <Form className={css.form}>
+        <label htmlFor={nameId}>name*</label>
+        <Field
+          id={nameId}
+          className={css.input}
+          type="text"
+          name="name"
+          placeholder="Name Surname"
+        />
+        <ErrorMessage name="name" component="span" />
 
-    return (
-      <Formik
-        initialValues={initialValues}
-        onSubmit={this.handleSubmit}
-        validationSchema={Schema}
-      >
-        <Form className={css.form}>
-          <label htmlFor={this.nameId}>name*</label>
-          <Field
-            id={this.nameId}
-            className={css.input}
-            type="text"
-            name="name"
-            placeholder="Name Surname"
-          />
-          <ErrorMessage name="name" component="span" />
+        <label htmlFor={numberId}>number*</label>
+        <Field
+          id={numberId}
+          className={css.input}
+          type="tel"
+          name="number"
+          placeholder="000-00-00"
+        />
+        <ErrorMessage name="number" component="span" />
 
-          <label htmlFor={this.numberId}>number*</label>
-          <Field
-            id={this.numberId}
-            className={css.input}
-            type="tel"
-            name="number"
-            placeholder="000-00-00"
-          />
-          <ErrorMessage name="number" component="span" />
+        <button type="submit" className={css.addButton}>
+          Add contact
+        </button>
+      </Form>
+    </Formik>
+  );
+};
 
-          <button type="submit" className={css.addButton}>
-            Add contact
-          </button>
-        </Form>
-      </Formik>
-    );
-  }
-}
+// const initialValues = {
+//   name: '',
+//   number: '',
+// };
+
+// export class ContactForm extends Component {
+//   handleSubmit = (values, { resetForm }) => {
+//     const newContact = {
+//       id: nanoid(),
+//       name: values.name,
+//       number: values.number,
+//     };
+
+//     this.props.onSubmit(newContact);
+//     resetForm();
+//   };
+
+//   nameId = nanoid();
+//   numberId = nanoid();
+
+//   render() {
+//     ContactForm.propType = {
+//       onSubmit: PropTypes.func,
+//     };
+
+//     return (
+//       <Formik
+//         initialValues={initialValues}
+//         onSubmit={this.handleSubmit}
+//         validationSchema={Schema}
+//       >
+//         <Form className={css.form}>
+//           <label htmlFor={this.nameId}>name*</label>
+//           <Field
+//             id={this.nameId}
+//             className={css.input}
+//             type="text"
+//             name="name"
+//             placeholder="Name Surname"
+//           />
+//           <ErrorMessage name="name" component="span" />
+
+//           <label htmlFor={this.numberId}>number*</label>
+//           <Field
+//             id={this.numberId}
+//             className={css.input}
+//             type="tel"
+//             name="number"
+//             placeholder="000-00-00"
+//           />
+//           <ErrorMessage name="number" component="span" />
+
+//           <button type="submit" className={css.addButton}>
+//             Add contact
+//           </button>
+//         </Form>
+//       </Formik>
+//     );
+//   }
+// }
 
 // ==========first variant without Formik================
 
